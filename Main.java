@@ -56,7 +56,7 @@ class MonthTransaction {
     this.monthYear = Calendar.getInstance();
     this.monthYear.set(
         Calendar.MONTH,
-        Integer.parseInt(monthYear.split("/")[0])
+        Integer.parseInt(monthYear.split("/")[0]) - 1
       );
     this.monthYear.set(
         Calendar.YEAR,
@@ -152,11 +152,15 @@ class Transaction {
     return description;
   }
 
-  public double getTransactionAmount() {
+  public BigDecimal getTransactionAmount() {
     return (
-      Double.parseDouble(deposite.replace(",", "")) -
-      Double.parseDouble(withdraw.replace(",", ""))
-    );
+      new BigDecimal(deposite.replace(",", ""))
+      .subtract(new BigDecimal(withdraw.replace(",", ""))));
+  }
+
+  public BigDecimal getEntryBalance() {
+    return new BigDecimal(balance.replace(",", ""))
+    .subtract(getTransactionAmount());
   }
 }
 
@@ -291,12 +295,15 @@ public class Main {
         .stream()
         .map(
           entry -> {
-            double total = entry
+            Transaction firstTransaction = entry.getValue().get(0);
+            BigDecimal initialBalance = firstTransaction.getEntryBalance();
+            BigDecimal totalTransaction = entry
               .getValue()
-              .stream()
-              .mapToDouble(Transaction::getTransactionAmount)
-              .sum();
-            return new MonthTransaction(entry.getKey(), round(total, 2));
+              .parallelStream()
+              .map(d -> d.getTransactionAmount())
+              .reduce(BigDecimal.ZERO, BigDecimal::add);
+            double monthlyBalance = initialBalance.add(totalTransaction).setScale(2, RoundingMode.HALF_UP).doubleValue();
+            return new MonthTransaction(entry.getKey(), monthlyBalance);
           }
         )
         .sorted(
@@ -340,12 +347,15 @@ public class Main {
         .parallelStream()
         .map(
           entry -> {
-            double total = entry
+            Transaction firstTransaction = entry.getValue().get(0);
+            BigDecimal initialBalance = firstTransaction.getEntryBalance();
+            BigDecimal totalTransaction = entry
               .getValue()
               .parallelStream()
-              .mapToDouble(Transaction::getTransactionAmount)
-              .sum();
-            return new MonthTransaction(entry.getKey(), round(total, 2));
+              .map(d -> d.getTransactionAmount())
+              .reduce(BigDecimal.ZERO, BigDecimal::add);
+            double monthlyBalance = initialBalance.add(totalTransaction).setScale(2, RoundingMode.HALF_UP).doubleValue();
+            return new MonthTransaction(entry.getKey(), monthlyBalance);
           }
         )
         .sorted(

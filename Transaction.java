@@ -5,14 +5,14 @@ public class Transaction {
 
   private Calendar date;
   private String description;
-  private String deposite;
+  private String deposit;
   private String withdraw;
   private String balance;
 
   public Transaction(
     String[] date,
     String description,
-    String deposite,
+    String deposit,
     String withdraw,
     String balance
   ) {
@@ -25,7 +25,7 @@ public class Transaction {
     this.date.set(Calendar.SECOND, 0);
     this.date.set(Calendar.MILLISECOND, 0);
     this.description = description;
-    this.deposite = deposite.replace("\"", "");
+    this.deposit = deposit.replace("\"", "");
     this.withdraw = withdraw.replace("\"", "");
     this.balance = balance.replace("\"", "");
   }
@@ -46,16 +46,24 @@ public class Transaction {
     return ((date.get(Calendar.MONTH) + 1) + "/" + date.get(Calendar.YEAR));
   }
 
+  public BigDecimal getBalance() {
+    return new BigDecimal(balance.replace(",", ""));
+  }
+
+  public BigDecimal getDeposit() {
+    return new BigDecimal(deposit.replace(",", ""));
+  }
+
+  public BigDecimal getWithdraw() {
+    return new BigDecimal(withdraw.replace(",", ""));
+  }
+
   public BigDecimal getTransactionAmount() {
-    return (
-      new BigDecimal(deposite.replace(",", ""))
-      .subtract(new BigDecimal(withdraw.replace(",", "")))
-    );
+    return getDeposit().subtract(getWithdraw());
   }
 
   public BigDecimal getEntryBalance() {
-    return new BigDecimal(balance.replace(",", ""))
-    .subtract(getTransactionAmount());
+    return getBalance().subtract(getTransactionAmount());
   }
 
   public String toString() {
@@ -68,7 +76,7 @@ public class Transaction {
       " " +
       description +
       " " +
-      deposite +
+      deposit +
       " " +
       withdraw +
       " " +

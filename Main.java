@@ -5,8 +5,8 @@ public class Main {
   static final double CORE = 4;
 
   public static void main(String[] args) {
-    runQ1();
-    // runQ2();
+    // runQ1();
+    runQ2();
   }
 
   public static void runQ1() {
@@ -46,10 +46,11 @@ public class Main {
     double speedup = 0;
     double efficiency = 0;
     System.out.println("===================== QUESTION 2 ("+INPUT_SMALL+") =====================");
+    System.out.println("================================== TASK 1 ==================================");
     System.out.println("================================= SEQUENCE =================================");
-    ts = Q2.run(INPUT_SMALL, Type.SEQUENCE);
+    ts = Q2.runT1(INPUT_SMALL, Type.SEQUENCE);
     System.out.println("================================= PARALLEL =================================");
-    tp = Q2.run(INPUT_SMALL, Type.PARALLEL);
+    tp = Q2.runT1(INPUT_SMALL, Type.PARALLEL);
     System.out.println("Sequence: " + ts + " ms");
     System.out.println("Parallel: " + tp + " ms");
     speedup = ts/tp;
@@ -57,11 +58,11 @@ public class Main {
     System.out.println("Speed Up: " + speedup + " times faster");
     System.out.println("Efficiency: " + efficiency + " %");
     System.out.println("============================================================================");
-    System.out.println("===================== QUESTION 2 ("+INPUT_LARGE+") ==================");
+    System.out.println("================================== TASK 2 ==================================");
     System.out.println("================================= SEQUENCE =================================");
-    ts = Q2.run(INPUT_LARGE, Type.SEQUENCE);
+    ts = Q2.runT2(INPUT_SMALL, Type.SEQUENCE);
     System.out.println("================================= PARALLEL =================================");
-    tp = Q2.run(INPUT_LARGE, Type.PARALLEL);
+    tp = Q2.runT2(INPUT_SMALL, Type.PARALLEL);
     System.out.println("Sequence: " + ts + " ms");
     System.out.println("Parallel: " + tp + " ms");
     speedup = ts/tp;
@@ -69,5 +70,17 @@ public class Main {
     System.out.println("Speed Up: " + speedup + " times faster");
     System.out.println("Efficiency: " + efficiency + " %");
     System.out.println("============================================================================");
+    // System.out.println("===================== QUESTION 2 ("+INPUT_LARGE+") ==================");
+    // System.out.println("================================= SEQUENCE =================================");
+    // ts = Q2.run(INPUT_LARGE, Type.SEQUENCE);
+    // System.out.println("================================= PARALLEL =================================");
+    // tp = Q2.run(INPUT_LARGE, Type.PARALLEL);
+    // System.out.println("Sequence: " + ts + " ms");
+    // System.out.println("Parallel: " + tp + " ms");
+    // speedup = ts/tp;
+    // efficiency = (speedup*100)/CORE;
+    // System.out.println("Speed Up: " + speedup + " times faster");
+    // System.out.println("Efficiency: " + efficiency + " %");
+    // System.out.println("============================================================================");
   }
 }

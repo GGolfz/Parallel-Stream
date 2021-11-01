@@ -40,7 +40,6 @@ public class Q1 {
             )
         )
         .filter(Transaction::isClearBalance)
-        .sorted((t1, t2) -> t1.getDate().compareTo(t2.getDate()))
         .collect(
           groupingBy(
             Transaction::getDescription,
@@ -95,11 +94,10 @@ public class Q1 {
                   )
               )
               .filter(Transaction::isClearBalance)
-              .sorted((t1, t2) -> t1.getDate().compareTo(t2.getDate()))
               .collect(
                 groupingBy(
                   Transaction::getDescription,
-                  collectingAndThen(toList(), t -> t.stream().findFirst().get())
+                  collectingAndThen(toList(), t -> t.parallelStream().findFirst().get())
                 )
               )
               .entrySet()

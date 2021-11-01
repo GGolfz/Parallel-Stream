@@ -77,12 +77,7 @@ public class Q2 {
             );
           }
         )
-        .sorted(
-          (t1, t2) -> {
-            int result = t1.getMonthYear().compareTo(t2.getMonthYear());
-            return result;
-          }
-        )
+        .sorted((t1, t2) -> t1.getMonthYear().compareTo(t2.getMonthYear()))
         .collect(toList())
         .forEach(v -> System.out.println(v.toStringWithDetail()));
       Timestamp endTimestamp = new Timestamp(System.currentTimeMillis());
@@ -147,12 +142,7 @@ public class Q2 {
                   );
                 }
               )
-              .sorted(
-                (t1, t2) -> {
-                  int result = t1.getMonthYear().compareTo(t2.getMonthYear());
-                  return result;
-                }
-              )
+              .sorted((t1, t2) -> t1.getMonthYear().compareTo(t2.getMonthYear()))
               .collect(toList())
         )
         .get()
@@ -204,12 +194,7 @@ public class Q2 {
             return new MonthTransaction(entry.getKey(), 0, 0, monthlyBalance);
           }
         )
-        .sorted(
-          (t1, t2) -> {
-            int result = t1.getMonthYear().compareTo(t2.getMonthYear());
-            return result;
-          }
-        )
+        .sorted((t1, t2) -> t1.getMonthYear().compareTo(t2.getMonthYear()))
         .collect(toList())
         .forEach(System.out::println);
       Timestamp endTimestamp = new Timestamp(System.currentTimeMillis());
@@ -269,12 +254,7 @@ public class Q2 {
                   );
                 }
               )
-              .sorted(
-                (t1, t2) -> {
-                  int result = t1.getMonthYear().compareTo(t2.getMonthYear());
-                  return result;
-                }
-              )
+              .sorted((t1, t2) -> t1.getMonthYear().compareTo(t2.getMonthYear()))
               .collect(toList())
         )
         .get()
